@@ -48,7 +48,7 @@ export function ItemModal() {
       className="print-hidden m-auto w-[min(92vw,30rem)] overflow-hidden rounded-3xl bg-paper p-0 text-ink shadow-card backdrop:bg-ink/60 backdrop:backdrop-blur-sm"
     >
       {selected ? (
-        <div className="animate-rise">
+        <div className="animate-pop">
           {/* Header image (item photo, else category banner, else brand wash). */}
           <div className="relative aspect-[16/9] bg-brand-tint">
             {selected.image ? (

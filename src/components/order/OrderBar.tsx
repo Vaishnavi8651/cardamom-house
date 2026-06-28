@@ -26,6 +26,16 @@ export function OrderBar() {
     if (count === 0) setOpen(false);
   }, [count]);
 
+  // Lock background scroll while open.
+  useEffect(() => {
+    if (!open) return;
+    const previous = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = previous;
+    };
+  }, [open]);
+
   if (count === 0) return null;
 
   return (
@@ -48,9 +58,9 @@ export function OrderBar() {
           if (event.target === ref.current) setOpen(false);
         }}
         aria-labelledby="picks-title"
-        className="print-hidden m-auto w-[min(92vw,26rem)] rounded-3xl bg-paper p-0 text-ink shadow-card backdrop:bg-ink/60 backdrop:backdrop-blur-sm"
+        className="print-hidden m-auto w-[min(92vw,26rem)] overflow-hidden rounded-3xl bg-paper p-0 text-ink shadow-card backdrop:bg-ink/60 backdrop:backdrop-blur-sm"
       >
-        <div className="animate-rise p-6">
+        <div className="animate-pop p-6">
           <div className="flex items-center justify-between">
             <h2 id="picks-title" className="font-display text-xl font-semibold text-ink">
               Your picks

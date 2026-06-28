@@ -43,15 +43,24 @@ export function Hero({ restaurant, status, nowLabel }: HeroProps) {
             Lisbon · Brunch Café
           </p>
 
-          <h1 className="animate-rise font-display text-5xl font-semibold leading-[1.05] tracking-tight text-ink sm:text-6xl">
+          <h1
+            className="animate-rise font-display text-5xl font-semibold leading-[1.05] tracking-tight text-ink sm:text-6xl"
+            style={{ animationDelay: "70ms" }}
+          >
             {restaurant.name}
           </h1>
 
-          <p className="animate-rise mt-4 max-w-md text-lg leading-relaxed text-ink-soft">
+          <p
+            className="animate-rise mt-4 max-w-md text-lg leading-relaxed text-ink-soft"
+            style={{ animationDelay: "140ms" }}
+          >
             {restaurant.tagline}
           </p>
 
-          <div className="animate-rise mt-7 flex flex-wrap items-center gap-3">
+          <div
+            className="animate-rise mt-7 flex flex-wrap items-center gap-3"
+            style={{ animationDelay: "210ms" }}
+          >
             <OpenStatusBadge
               isOpen={status.isOpen}
               nextOpening={status.nextOpening}
@@ -62,7 +71,10 @@ export function Hero({ restaurant, status, nowLabel }: HeroProps) {
             </span>
           </div>
 
-          <div className="animate-rise mt-6 flex flex-wrap gap-3">
+          <div
+            className="animate-rise mt-6 flex flex-wrap gap-3"
+            style={{ animationDelay: "280ms" }}
+          >
             <a
               href={mapsHref(restaurant.address)}
               target="_blank"
@@ -82,7 +94,10 @@ export function Hero({ restaurant, status, nowLabel }: HeroProps) {
         </div>
 
         {/* Layered, hand-placed photo frame. */}
-        <div className="animate-rise relative mx-auto w-full max-w-sm md:max-w-none">
+        <div
+          className="animate-rise relative mx-auto w-full max-w-sm md:max-w-none"
+          style={{ animationDelay: "120ms" }}
+        >
           <div
             aria-hidden="true"
             className="absolute inset-0 -rotate-3 rounded-[1.75rem] bg-brand-tint-strong"
