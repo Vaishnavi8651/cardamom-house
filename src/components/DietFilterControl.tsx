@@ -35,7 +35,10 @@ export function DietFilterControl({ value }: { value: DietFilter }) {
   return (
     <fieldset className="print-hidden flex items-center gap-2">
       <legend className="sr-only">Filter the menu by dietary preference</legend>
-      <span aria-hidden="true" className="text-sm font-medium text-ink-soft">
+      <span
+        aria-hidden="true"
+        className="hidden text-sm font-medium text-ink-soft sm:inline"
+      >
         Show
       </span>
       <div className="inline-flex rounded-full border border-line bg-paper p-0.5">

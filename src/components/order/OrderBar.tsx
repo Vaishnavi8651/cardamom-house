@@ -58,7 +58,7 @@ export function OrderBar() {
           if (event.target === ref.current) setOpen(false);
         }}
         aria-labelledby="picks-title"
-        className="print-hidden m-auto w-[min(92vw,26rem)] overflow-hidden rounded-3xl bg-paper p-0 text-ink shadow-card backdrop:bg-ink/60 backdrop:backdrop-blur-sm"
+        className="print-hidden m-auto max-h-[90dvh] w-[min(92vw,26rem)] overflow-y-auto rounded-3xl bg-paper p-0 text-ink shadow-card backdrop:bg-ink/60 backdrop:backdrop-blur-sm"
       >
         <div className="animate-pop p-6">
           <div className="flex items-center justify-between">

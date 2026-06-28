@@ -9,6 +9,8 @@ interface TodaysSpecialProps {
   item: MenuItem | undefined;
   blurb: string;
   soldOut: boolean;
+  /** Whether the special's item is present in the (filtered) menu below. */
+  itemInMenu?: boolean;
 }
 
 /**
@@ -19,7 +21,12 @@ interface TodaysSpecialProps {
  * friendly alternative, so the page never looks broken. Renders nothing if the
  * referenced item can't be resolved.
  */
-export function TodaysSpecial({ item, blurb, soldOut }: TodaysSpecialProps) {
+export function TodaysSpecial({
+  item,
+  blurb,
+  soldOut,
+  itemInMenu = true,
+}: TodaysSpecialProps) {
   if (!item) return null;
 
   return (
@@ -74,9 +81,9 @@ export function TodaysSpecial({ item, blurb, soldOut }: TodaysSpecialProps) {
                 : blurb}
             </p>
 
-            {!soldOut ? (
+            {!soldOut && itemInMenu ? (
               <a
-                href="#brunch"
+                href={`#${item.id}`}
                 className="mt-5 inline-flex items-center gap-1.5 rounded-full bg-cream px-4 py-2 text-sm font-semibold text-brand transition-transform hover:-translate-y-0.5"
               >
                 See it on the menu

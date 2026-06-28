@@ -63,14 +63,18 @@ export function MenuItemRow({
 
   if (soldOut) {
     return (
-      <li className="px-2 py-4 opacity-55 print-break-avoid" aria-disabled="true">
+      <li
+        id={item.id}
+        className="menu-item px-2 py-4 opacity-55 print-break-avoid"
+        aria-disabled="true"
+      >
         {content}
       </li>
     );
   }
 
   return (
-    <li className="print-break-avoid">
+    <li id={item.id} className="menu-item print-break-avoid">
       <button
         type="button"
         aria-haspopup="dialog"

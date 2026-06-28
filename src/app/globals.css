@@ -133,6 +133,26 @@ body {
   animation: pop 0.24s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
+/* Brief highlight when a menu item is linked to by #id (e.g. the special's
+   "See it on the menu" button), so the eye lands on the right row. */
+.menu-item {
+  border-radius: 0.5rem;
+}
+@keyframes target-pulse {
+  0%,
+  30% {
+    background-color: var(--color-brand-tint);
+    box-shadow: inset 0 0 0 2px var(--color-brand);
+  }
+  100% {
+    background-color: transparent;
+    box-shadow: inset 0 0 0 0 transparent;
+  }
+}
+.menu-item:target {
+  animation: target-pulse 2.6s ease both;
+}
+
 /*
   Print: collapse the page to a clean, ink-friendly single document.
   Hide the sticky nav, banners and decorative chrome; let sections flow.

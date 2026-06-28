@@ -45,7 +45,7 @@ export function ItemModal() {
         if (event.target === ref.current) closeItem();
       }}
       aria-labelledby="item-modal-title"
-      className="print-hidden m-auto w-[min(92vw,30rem)] overflow-hidden rounded-3xl bg-paper p-0 text-ink shadow-card backdrop:bg-ink/60 backdrop:backdrop-blur-sm"
+      className="print-hidden m-auto max-h-[90dvh] w-[min(92vw,30rem)] overflow-y-auto rounded-3xl bg-paper p-0 text-ink shadow-card backdrop:bg-ink/60 backdrop:backdrop-blur-sm"
     >
       {selected ? (
         <div className="animate-pop">

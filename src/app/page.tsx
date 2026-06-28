@@ -33,6 +33,13 @@ export default async function MenuPage({ searchParams }: PageProps) {
 
   const visibleCategories = filterCategories(categories, diet);
 
+  // Is the special's item actually shown in the (possibly filtered) menu? If a
+  // diet filter hides it, the "See it on the menu" deep-link would be dead, so
+  // we tell the callout to drop the link.
+  const specialInMenu = visibleCategories.some((category) =>
+    category.items.some((item) => item.id === special.itemId),
+  );
+
   const navLinks = [
     ...visibleCategories.map((category) => ({
       id: category.id,
@@ -63,6 +70,7 @@ export default async function MenuPage({ searchParams }: PageProps) {
         item={special.item}
         blurb={special.blurb}
         soldOut={special.isSoldOut}
+        itemInMenu={specialInMenu}
       />
 
       <main id="menu">
