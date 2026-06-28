@@ -29,9 +29,14 @@ Requires Node 18.18+ (developed on Node 20).
 - **Tailwind CSS v4** (CSS-first config via `@theme` in `globals.css`)
 - **next/font** — Fraunces (display serif) + Inter (body)
 - **next/image** — optimized, lazy-loaded photography (Unsplash sources)
+- **zod** — schema validation + inferred types for the JSON menu
 
-No backend, no CMS. The menu is hard-coded in `src/data/menu.ts` (typed with
-`satisfies`) and read through a single typed accessor.
+No backend, no CMS. The menu lives in `src/data/menu.json` and is parsed through a
+**zod schema** at load (`src/data/menu.ts`). The schema is the single source of
+truth for both runtime validation *and* the TypeScript types. Editing the menu —
+adding or removing an item, a tag, a photo — is a pure JSON change; if the data
+is malformed, the build fails with a precise error instead of shipping a broken
+page. Per-category and per-item photos are referenced from the JSON too.
 
 ## The three states
 
@@ -69,10 +74,11 @@ src/
     getTodaySpecial.ts    # resolves the special item + sold-out state
     state.ts              # ?state= parsing + simulated clock
   types/
-    menu.ts           # domain types (data is typed against these)
+    menu.ts           # zod schema + inferred domain types
   data/
-    menu.ts           # the menu, `satisfies MenuData`, + by-id lookup
-    images.ts         # curated photography (swap point)
+    menu.json         # the editable menu data (add/remove items here)
+    menu.ts           # parses + validates menu.json via zod, + by-id lookup
+    images.ts         # curated brand photography (hero, interior)
 ```
 
 Only `CategoryNav` and the scroll-spy hook are client components; everything else

@@ -15,23 +15,24 @@ export interface SiteImage {
 }
 
 const UNSPLASH = "https://images.unsplash.com";
-const COMMON = "auto=format&fit=crop&q=70";
+// HD source request; next/image downsizes per device via each component's `sizes`.
+const COMMON = "auto=format&fit=crop&q=80";
 
 /** Hero — a warm, sunlit brunch table. */
 export const heroImage: SiteImage = {
-  src: `${UNSPLASH}/photo-1504754524776-8f4f37790ca0?${COMMON}&w=1100`,
+  src: `${UNSPLASH}/photo-1504754524776-8f4f37790ca0?${COMMON}&w=1600`,
   alt: "A sunlit brunch spread of toast, eggs and coffee on a wooden table",
 };
 
-/** Today's special — golden French toast. */
+/** Today's special — golden French toast (fallback when the item has no image). */
 export const specialImage: SiteImage = {
-  src: `${UNSPLASH}/photo-1484723091739-30a097e8f929?${COMMON}&w=900`,
+  src: `${UNSPLASH}/photo-1484723091739-30a097e8f929?${COMMON}&w=1200`,
   alt: "Golden French toast, dusted and drizzled, on a plate",
 };
 
 /** Footer / brand — the café interior. */
 export const interiorImage: SiteImage = {
-  src: `${UNSPLASH}/photo-1517248135467-4c7edcad34c4?${COMMON}&w=1000`,
+  src: `${UNSPLASH}/photo-1517248135467-4c7edcad34c4?${COMMON}&w=1400`,
   alt: "The warm, light-filled interior of the café",
 };
 

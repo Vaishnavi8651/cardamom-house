@@ -63,7 +63,7 @@ export function Hero({ restaurant, status, nowLabel }: HeroProps) {
             aria-hidden="true"
             className="absolute inset-0 -rotate-3 rounded-[1.75rem] bg-brand-tint-strong"
           />
-          <div className="relative aspect-[4/5] rotate-2 overflow-hidden rounded-[1.5rem] bg-brand-tint shadow-card ring-1 ring-ink/5">
+          <div className="group relative aspect-[4/5] rotate-2 overflow-hidden rounded-[1.5rem] bg-brand-tint shadow-card ring-1 ring-ink/5 transition-transform duration-500 hover:rotate-0">
             <Image
               src={heroImage.src}
               alt={heroImage.alt}
@@ -72,7 +72,7 @@ export function Hero({ restaurant, status, nowLabel }: HeroProps) {
               sizes="(min-width: 768px) 40vw, 90vw"
               placeholder="blur"
               blurDataURL={BLUR_DATA_URL}
-              className="object-cover"
+              className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
             />
           </div>
         </div>

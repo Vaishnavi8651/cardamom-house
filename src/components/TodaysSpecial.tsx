@@ -85,18 +85,19 @@ export function TodaysSpecial({ item, blurb, soldOut }: TodaysSpecialProps) {
             ) : null}
           </div>
 
-          {/* Photo — first on mobile (appetising lead), right column on desktop. */}
-          <div className="relative order-1 min-h-[12rem] md:order-2 md:min-h-full">
+          {/* Photo — first on mobile (appetising lead), right column on desktop.
+              Uses the item's own image when present, else the curated fallback. */}
+          <div className="group relative order-1 min-h-[12rem] overflow-hidden md:order-2 md:min-h-full">
             <Image
-              src={specialImage.src}
-              alt={specialImage.alt}
+              src={item.image ?? specialImage.src}
+              alt={item.image ? item.name : specialImage.alt}
               fill
               sizes="(min-width: 768px) 45vw, 100vw"
               placeholder="blur"
               blurDataURL={BLUR_DATA_URL}
               className={[
-                "object-cover",
-                soldOut ? "opacity-50 grayscale" : "",
+                "object-cover transition-transform duration-700 ease-out",
+                soldOut ? "opacity-50 grayscale" : "group-hover:scale-105",
               ].join(" ")}
             />
             {soldOut ? (

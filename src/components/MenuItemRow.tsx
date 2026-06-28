@@ -20,8 +20,8 @@ export function MenuItemRow({ item, soldOut = false }: MenuItemRowProps) {
   return (
     <li
       className={[
-        "flex flex-col gap-1 py-4 print-break-avoid",
-        soldOut ? "opacity-55" : "",
+        "flex flex-col gap-1 rounded-lg px-2 py-4 transition-colors print-break-avoid",
+        soldOut ? "opacity-55" : "hover:bg-brand-tint/40",
       ].join(" ")}
       aria-disabled={soldOut || undefined}
     >

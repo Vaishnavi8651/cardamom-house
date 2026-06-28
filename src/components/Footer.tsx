@@ -73,7 +73,7 @@ export function Footer({ restaurant }: { restaurant: Restaurant }) {
           </div>
 
           {/* Warm closing image; hidden from print to save ink. */}
-          <div className="print-hidden relative hidden aspect-[5/3] overflow-hidden rounded-2xl bg-brand-tint shadow-card md:block">
+          <div className="group print-hidden relative hidden aspect-[5/3] overflow-hidden rounded-2xl bg-brand-tint shadow-card md:block">
             <Image
               src={interiorImage.src}
               alt={interiorImage.alt}
@@ -81,7 +81,7 @@ export function Footer({ restaurant }: { restaurant: Restaurant }) {
               sizes="(min-width: 768px) 33vw, 0px"
               placeholder="blur"
               blurDataURL={BLUR_DATA_URL}
-              className="object-cover"
+              className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
             />
           </div>
         </div>
