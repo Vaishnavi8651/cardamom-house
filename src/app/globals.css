@@ -1,0 +1,100 @@
+@import "tailwindcss";
+
+/*
+  Cardamom House design tokens.
+  The brand amber (#B45309) is the anchor; everything else is a warm, low-
+  saturation neutral chosen to feel like a Lisbon café rather than a SaaS app.
+*/
+@theme {
+  --color-brand: #b45309;
+  --color-brand-soft: #d97706;
+  --color-brand-tint: #fdf3e7;
+  --color-brand-tint-strong: #f8e6cf;
+
+  --color-cream: #faf5ec;
+  --color-paper: #fffdf8;
+  --color-ink: #2b2018;
+  --color-ink-soft: #6b5d4f;
+  --color-line: #e8ddcc;
+
+  --font-display: var(--font-fraunces), Georgia, "Times New Roman", serif;
+  --font-body: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+
+  --shadow-card: 0 1px 2px rgba(43, 32, 24, 0.04),
+    0 8px 24px -12px rgba(43, 32, 24, 0.12);
+}
+
+html {
+  scroll-behavior: smooth;
+  /* Offset anchor jumps so the sticky nav never covers section headings. */
+  scroll-padding-top: 6rem;
+}
+
+body {
+  background-color: var(--color-cream);
+  color: var(--color-ink);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Honour users who prefer reduced motion. */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+/* A consistent, visible focus ring across interactive elements. */
+:focus-visible {
+  outline: 2px solid var(--color-brand);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Tasteful one-time entrance for above-the-fold content (pure CSS). */
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-rise {
+  animation: rise 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/*
+  Print: collapse the page to a clean, ink-friendly single document.
+  Hide the sticky nav, banners and decorative chrome; let sections flow.
+*/
+@media print {
+  @page {
+    margin: 1.4cm;
+  }
+  body {
+    background: #fff;
+    color: #000;
+    font-size: 11px;
+  }
+  .print-hidden {
+    display: none !important;
+  }
+  .print-break-avoid {
+    break-inside: avoid;
+  }
+  .animate-rise {
+    animation: none;
+  }
+}
