@@ -28,7 +28,7 @@ export function TodaysSpecial({ item, blurb, soldOut }: TodaysSpecialProps) {
         <div
           className={[
             "grid overflow-hidden rounded-3xl shadow-card md:grid-cols-2",
-            soldOut ? "border border-line bg-paper" : "bg-brand text-cream",
+            soldOut ? "border border-line bg-paper" : "bg-brand text-on-brand",
           ].join(" ")}
         >
           {/* Text — second on desktop, below the photo on mobile. */}
@@ -38,7 +38,7 @@ export function TodaysSpecial({ item, blurb, soldOut }: TodaysSpecialProps) {
                 id="special-heading"
                 className={[
                   "text-xs font-semibold uppercase tracking-[0.2em]",
-                  soldOut ? "text-brand" : "text-cream/80",
+                  soldOut ? "text-brand" : "text-on-brand/80",
                 ].join(" ")}
               >
                 Today&rsquo;s Special
@@ -49,14 +49,14 @@ export function TodaysSpecial({ item, blurb, soldOut }: TodaysSpecialProps) {
             <h2
               className={[
                 "mt-3 font-display text-2xl font-semibold sm:text-3xl",
-                soldOut ? "text-ink" : "text-cream",
+                soldOut ? "text-ink" : "text-on-brand",
               ].join(" ")}
             >
               {item.name}
               <span
                 className={[
                   "ml-3 align-middle text-lg font-medium tabular-nums",
-                  soldOut ? "text-ink-soft" : "text-cream/80",
+                  soldOut ? "text-ink-soft" : "text-on-brand/80",
                 ].join(" ")}
               >
                 {formatPrice(item.price)}
@@ -66,7 +66,7 @@ export function TodaysSpecial({ item, blurb, soldOut }: TodaysSpecialProps) {
             <p
               className={[
                 "mt-2 max-w-prose text-sm leading-relaxed sm:text-base",
-                soldOut ? "text-ink-soft" : "text-cream/90",
+                soldOut ? "text-ink-soft" : "text-on-brand/90",
               ].join(" ")}
             >
               {soldOut

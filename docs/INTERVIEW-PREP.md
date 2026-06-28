@@ -108,10 +108,20 @@ The item dims with a `Sold out` pill (kept in the list — people still want to 
 it). The top callout doesn't vanish; it switches to a calm paper card with an
 alternative suggestion, so the page never looks broken.
 
-**"What did you deliberately leave out?"**
-Dietary filter, dark mode, real-time clock, animation library. All are
-stretch-only in the brief; I time-boxed and listed them in the README instead of
-half-building them.
+**"Which stretch goals did you do, and what did you leave out?"**
+Done: dietary filter (URL-driven), light/dark mode (token-based, contrast-verified
+both ways), pure-CSS entrance animation, print stylesheet, HD photography. Left
+out: real-time Lisbon clock (hard-coding is sanctioned by the brief) and a
+Motion dependency (pure CSS covers the tasteful entrance). I'd rather ship a few
+stretch goals done well than all of them half-built.
+
+**"How does dark mode stay accessible?"**
+It redefines the semantic colour tokens, so every component adapts with no
+per-component `dark:` variants. The one trap — amber can't be both a fill (needs
+light text on it) and accent text on a dark page — I solved by splitting
+`--color-brand` (accent, brightens in dark) from `--color-on-brand` (text on
+fills, flips dark). Every pair is verified ≥ WCAG AA in both themes, and a
+no-flash inline script sets the theme before first paint.
 
 ---
 

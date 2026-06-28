@@ -18,7 +18,7 @@ interface BadgeProps {
 const TONE_CLASSES: Record<BadgeTone, string> = {
   neutral: "border border-line bg-paper text-ink-soft",
   brand: "border border-brand/30 bg-brand-tint text-brand",
-  amber: "bg-brand text-cream",
+  amber: "bg-brand text-on-brand",
   dark: "bg-ink/90 text-cream",
 };
 

@@ -46,7 +46,7 @@ export default async function MenuPage({ searchParams }: PageProps) {
       {/* Skip link: the first focusable element, visible only on focus. */}
       <a
         href="#menu"
-        className="print-hidden sr-only z-50 rounded-md bg-brand px-4 py-2 text-cream focus:not-sr-only focus:fixed focus:left-4 focus:top-4"
+        className="print-hidden sr-only z-50 rounded-md bg-brand px-4 py-2 text-on-brand focus:not-sr-only focus:fixed focus:left-4 focus:top-4"
       >
         Skip to menu
       </a>

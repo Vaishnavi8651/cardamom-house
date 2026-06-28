@@ -4,6 +4,7 @@ import type { RestaurantStatus } from "@/lib/getRestaurantStatus";
 import { heroImage, BLUR_DATA_URL } from "@/data/images";
 import { Container } from "./ui/Container";
 import { OpenStatusBadge } from "./OpenStatusBadge";
+import { ThemeToggle } from "./ThemeToggle";
 
 interface HeroProps {
   restaurant: Restaurant;
@@ -29,6 +30,10 @@ export function Hero({ restaurant, status, nowLabel }: HeroProps) {
         aria-hidden="true"
         className="absolute -right-24 -top-24 -z-10 h-72 w-72 rounded-full bg-brand/10 blur-3xl"
       />
+
+      <div className="absolute right-4 top-4 z-10">
+        <ThemeToggle />
+      </div>
 
       <Container className="grid items-center gap-10 pb-12 pt-14 sm:pt-20 md:grid-cols-2">
         <div>

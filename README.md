@@ -107,10 +107,22 @@ renders on the server.
 - **Print stylesheet** (stretch goal) collapses the nav/banner and lets the menu
   flow to clean pages via `@media print`.
 
+## Stretch goals implemented
+
+- **Dietary filter** (all / vegetarian / gluten-free) via `?diet=` — server-side,
+  shareable, drops emptied categories from both the menu and the nav.
+- **Light/dark mode** respecting `prefers-color-scheme`, with a persisted manual
+  toggle and a no-flash inline script. Dark mode redefines the semantic colour
+  tokens (every component adapts automatically); a split `--color-brand` /
+  `--color-on-brand` keeps amber legible as both accent and fill. All colour
+  pairs verified ≥ WCAG AA in both themes.
+- **Pure-CSS entrance animation** and a **print stylesheet**.
+- **HD photography** via `next/image` with hover-zoom.
+
 ## What I'd build next
 
 - A real timezone-aware clock (Europe/Lisbon) behind the simulated one, so the
   open/closed badge is live in production.
-- A dietary filter (V / GF / all) — the tag data already supports it.
-- Light/dark mode honouring `prefers-color-scheme`.
-- A small entrance animation with Motion for the special callout.
+- A three-way theme control (System / Light / Dark) instead of a two-way toggle.
+- Per-item photography for the full menu (the data layer already supports
+  `item.image`).

@@ -59,7 +59,7 @@ export function DietFilterControl({ value }: { value: DietFilter }) {
                 className={[
                   "block rounded-full px-3 py-1.5 text-sm font-medium transition-colors peer-focus-visible:outline peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-brand",
                   checked
-                    ? "bg-brand text-cream"
+                    ? "bg-brand text-on-brand"
                     : "text-ink-soft hover:text-brand",
                 ].join(" ")}
               >

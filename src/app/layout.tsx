@@ -36,8 +36,21 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${fraunces.variable} ${inter.variable}`}>
-      <body>{children}</body>
+    <html
+      lang="en"
+      className={`${fraunces.variable} ${inter.variable}`}
+      suppressHydrationWarning
+    >
+      <body>
+        {/* Set the theme class before first paint to avoid a flash of the wrong
+            theme. Reads the saved choice, else falls back to system preference. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var t=localStorage.getItem('theme');var d=t?t==='dark':matchMedia('(prefers-color-scheme:dark)').matches;var c=document.documentElement.classList;c.toggle('dark',d);c.toggle('light',!d);}catch(e){}})();`,
+          }}
+        />
+        {children}
+      </body>
     </html>
   );
 }

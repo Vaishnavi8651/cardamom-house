@@ -63,7 +63,7 @@ export function CategoryNav({ links }: CategoryNavProps) {
                 className={[
                   "inline-block whitespace-nowrap rounded-full px-3.5 py-2 text-sm font-medium transition-colors",
                   isActive
-                    ? "bg-brand text-cream"
+                    ? "bg-brand text-on-brand"
                     : "text-ink-soft hover:bg-brand-tint hover:text-brand",
                 ].join(" ")}
               >
