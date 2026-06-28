@@ -2,12 +2,14 @@ import { menu } from "@/data/menu";
 import { getRestaurantStatus } from "@/lib/getRestaurantStatus";
 import { parseState, simulatedNow } from "@/lib/state";
 import { getTodaySpecial } from "@/lib/getTodaySpecial";
+import { parseDiet, filterCategories } from "@/lib/diet";
 import { Container } from "@/components/ui/Container";
 import { Hero } from "@/components/Hero";
 import { CategoryNav } from "@/components/CategoryNav";
 import { ClosedBanner } from "@/components/ClosedBanner";
 import { TodaysSpecial } from "@/components/TodaysSpecial";
 import { MenuSection } from "@/components/MenuSection";
+import { DietFilterControl } from "@/components/DietFilterControl";
 import { HoursBlock } from "@/components/HoursBlock";
 import { Footer } from "@/components/Footer";
 
@@ -20,6 +22,8 @@ export default async function MenuPage({ searchParams }: PageProps) {
   const params = await searchParams;
   const state = parseState(params.state);
 
+  const diet = parseDiet(params.diet);
+
   // All decisions resolved up front by the lib layer; the JSX below just renders.
   const { restaurant, categories } = menu;
   const now = simulatedNow(state);
@@ -27,8 +31,13 @@ export default async function MenuPage({ searchParams }: PageProps) {
   const special = getTodaySpecial(state);
   const soldOutItemId = special.isSoldOut ? special.itemId : null;
 
+  const visibleCategories = filterCategories(categories, diet);
+
   const navLinks = [
-    ...categories.map((category) => ({ id: category.id, name: category.name })),
+    ...visibleCategories.map((category) => ({
+      id: category.id,
+      name: category.name,
+    })),
     { id: "hours", name: "Hours" },
   ];
 
@@ -58,13 +67,23 @@ export default async function MenuPage({ searchParams }: PageProps) {
 
       <main id="menu">
         <Container className="space-y-14 pt-12">
-          {categories.map((category) => (
-            <MenuSection
-              key={category.id}
-              category={category}
-              soldOutItemId={soldOutItemId}
-            />
-          ))}
+          <div className="flex items-center justify-end">
+            <DietFilterControl value={diet} />
+          </div>
+
+          {visibleCategories.length > 0 ? (
+            visibleCategories.map((category) => (
+              <MenuSection
+                key={category.id}
+                category={category}
+                soldOutItemId={soldOutItemId}
+              />
+            ))
+          ) : (
+            <p className="rounded-2xl border border-line bg-paper px-5 py-8 text-center text-ink-soft">
+              No dishes match this filter right now.
+            </p>
+          )}
 
           <HoursBlock hours={restaurant.hours} today={now.day} />
         </Container>
