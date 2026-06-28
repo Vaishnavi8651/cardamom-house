@@ -1,6 +1,9 @@
 import type { Metadata, Viewport } from "next";
 import { Fraunces, Inter } from "next/font/google";
 import "./globals.css";
+import { OrderProvider } from "@/components/order/OrderProvider";
+import { ItemModal } from "@/components/order/ItemModal";
+import { OrderBar } from "@/components/order/OrderBar";
 
 /** Warm, slightly editorial serif for display type. */
 const fraunces = Fraunces({
@@ -49,7 +52,11 @@ export default function RootLayout({
             __html: `(function(){try{var t=localStorage.getItem('theme');var d=t?t==='dark':matchMedia('(prefers-color-scheme:dark)').matches;var c=document.documentElement.classList;c.toggle('dark',d);c.toggle('light',!d);}catch(e){}})();`,
           }}
         />
-        {children}
+        <OrderProvider>
+          {children}
+          <ItemModal />
+          <OrderBar />
+        </OrderProvider>
       </body>
     </html>
   );

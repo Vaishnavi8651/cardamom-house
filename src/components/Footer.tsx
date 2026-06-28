@@ -1,22 +1,8 @@
 import Image from "next/image";
 import type { Restaurant } from "@/types/menu";
 import { interiorImage, BLUR_DATA_URL } from "@/data/images";
+import { instagramUrl, telHref, mapsHref } from "@/lib/contact";
 import { Container } from "./ui/Container";
-
-/** "@cardamomhouse" → Instagram profile URL. */
-function instagramUrl(handle: string): string {
-  return `https://instagram.com/${handle.replace(/^@/, "")}`;
-}
-
-/** Phone string → tel: href (strip spaces). */
-function telHref(phone: string): string {
-  return `tel:${phone.replace(/\s+/g, "")}`;
-}
-
-/** Postal address → Google Maps search link. */
-function mapsHref(address: string): string {
-  return `https://maps.google.com/?q=${encodeURIComponent(address)}`;
-}
 
 export function Footer({ restaurant }: { restaurant: Restaurant }) {
   return (

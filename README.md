@@ -107,6 +107,17 @@ renders on the server.
 - **Print stylesheet** (stretch goal) collapses the nav/banner and lets the menu
   flow to clean pages via `@media print`.
 
+## Interactions
+
+- **Item detail modal** — tapping any item opens an accessible detail dialog
+  (built on the native `<dialog>` element: focus-trap, Esc, backdrop, `aria-modal`
+  for free) with a larger photo, description, tags and price.
+- **"Your picks"** — a client-only, `localStorage`-persisted list (there is no
+  backend/ordering); the modal's "Add to my picks" feeds a floating bar + drawer a
+  customer can show staff. Clearly labelled "nothing is ordered online."
+- **Hero CTAs** — "Get directions" (maps) and "Call" (`tel:`), reinforcing the
+  "lands on it from the pavement" intent.
+
 ## Stretch goals implemented
 
 - **Dietary filter** (all / vegetarian / gluten-free) via `?diet=` — server-side,

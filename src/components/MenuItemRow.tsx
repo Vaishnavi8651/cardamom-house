@@ -1,30 +1,35 @@
+"use client";
+
 import type { MenuItem } from "@/types/menu";
 import { formatPrice } from "@/lib/formatPrice";
+import { useOrder } from "./order/OrderProvider";
 import { Badge } from "./ui/Badge";
 import { TagList } from "./Tag";
 
 interface MenuItemRowProps {
   item: MenuItem;
-  /** When true the row dims and shows a "Sold out" pill, but stays in the list. */
+  /** When true the row dims and shows a "Sold out" pill, and isn't clickable. */
   soldOut?: boolean;
+  /** Fallback header image for the detail modal when the item has no photo. */
+  categoryImage?: string;
+  categoryName?: string;
 }
 
 /**
- * One menu line: "name ………… price", with description and tags beneath.
- *
- * Layout is a baseline-aligned flex row with a dotted leader (a real menu
- * convention that ties name to price), not a 2-column grid which would leave a
- * disconnected gap. Prices use tabular-nums so they form a clean optical column.
+ * One menu line: "name ………… price", with description and tags beneath. Clicking
+ * opens the item detail modal (unless sold out). Layout uses a baseline-aligned
+ * flex row with a dotted leader (a real menu convention) and tabular-nums prices.
  */
-export function MenuItemRow({ item, soldOut = false }: MenuItemRowProps) {
-  return (
-    <li
-      className={[
-        "flex flex-col gap-1 rounded-lg px-2 py-4 transition-colors print-break-avoid",
-        soldOut ? "opacity-55" : "hover:bg-brand-tint/40",
-      ].join(" ")}
-      aria-disabled={soldOut || undefined}
-    >
+export function MenuItemRow({
+  item,
+  soldOut = false,
+  categoryImage,
+  categoryName,
+}: MenuItemRowProps) {
+  const { openItem } = useOrder();
+
+  const content = (
+    <>
       <div className="flex items-baseline gap-2.5">
         <h3 className="font-display text-lg font-medium leading-snug text-ink">
           {item.name}
@@ -32,7 +37,6 @@ export function MenuItemRow({ item, soldOut = false }: MenuItemRowProps) {
 
         {soldOut ? <Badge tone="dark">Sold out</Badge> : null}
 
-        {/* Dotted leader fills the gap on larger screens; hidden when cramped. */}
         <span
           aria-hidden="true"
           className="mb-1.5 hidden flex-1 self-end border-b border-dotted border-line sm:block"
@@ -54,6 +58,34 @@ export function MenuItemRow({ item, soldOut = false }: MenuItemRowProps) {
           <TagList tags={item.tags} />
         </div>
       ) : null}
+    </>
+  );
+
+  if (soldOut) {
+    return (
+      <li className="px-2 py-4 opacity-55 print-break-avoid" aria-disabled="true">
+        {content}
+      </li>
+    );
+  }
+
+  return (
+    <li className="print-break-avoid">
+      <button
+        type="button"
+        aria-haspopup="dialog"
+        aria-label={`${item.name}, ${formatPrice(item.price)}. View details`}
+        onClick={() =>
+          openItem({
+            item,
+            image: item.image ?? categoryImage,
+            category: categoryName,
+          })
+        }
+        className="block w-full rounded-lg px-2 py-4 text-left transition-colors hover:bg-brand-tint/40"
+      >
+        {content}
+      </button>
     </li>
   );
 }

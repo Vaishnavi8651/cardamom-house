@@ -66,6 +66,8 @@ export function MenuSection({ category, soldOutItemId }: MenuSectionProps) {
             key={item.id}
             item={item}
             soldOut={item.id === soldOutItemId}
+            categoryImage={category.image}
+            categoryName={category.name}
           />
         ))}
       </ul>

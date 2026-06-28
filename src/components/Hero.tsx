@@ -2,6 +2,7 @@ import Image from "next/image";
 import type { Restaurant } from "@/types/menu";
 import type { RestaurantStatus } from "@/lib/getRestaurantStatus";
 import { heroImage, BLUR_DATA_URL } from "@/data/images";
+import { mapsHref, telHref } from "@/lib/contact";
 import { Container } from "./ui/Container";
 import { OpenStatusBadge } from "./OpenStatusBadge";
 import { ThemeToggle } from "./ThemeToggle";
@@ -59,6 +60,24 @@ export function Hero({ restaurant, status, nowLabel }: HeroProps) {
               <span className="sr-only">Current time: </span>
               {nowLabel}
             </span>
+          </div>
+
+          <div className="animate-rise mt-6 flex flex-wrap gap-3">
+            <a
+              href={mapsHref(restaurant.address)}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 rounded-full bg-brand px-5 py-2.5 text-sm font-semibold text-on-brand transition-transform hover:-translate-y-0.5"
+            >
+              Get directions
+              <span aria-hidden="true">→</span>
+            </a>
+            <a
+              href={telHref(restaurant.phone)}
+              className="inline-flex items-center gap-1.5 rounded-full border border-line bg-paper px-5 py-2.5 text-sm font-semibold text-ink transition-colors hover:text-brand"
+            >
+              Call
+            </a>
           </div>
         </div>
 
