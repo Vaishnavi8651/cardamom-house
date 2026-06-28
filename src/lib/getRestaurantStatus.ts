@@ -1,7 +1,7 @@
-import type { DayKey, Hours } from "./types";
+import type { DayKey, Hours } from "@/types/menu";
 import type { SimulatedNow } from "./state";
 
-/** Days in display/iteration order (the café week starts on Monday). */
+/** Days in the café's week order (starts Monday). Drives iteration + display. */
 export const DAY_ORDER: readonly DayKey[] = [
   "monday",
   "tuesday",
@@ -26,30 +26,30 @@ export function dayLabel(day: DayKey): string {
   return DAY_LABELS[day];
 }
 
-/** A parsed open/close window in minutes-since-midnight. */
+/** A parsed open/close window, in minutes-since-midnight. */
 interface OpenWindow {
   open: number;
   close: number;
 }
 
-/** "08:00" → 480. Returns null on anything unparseable. */
+/** "08:00" → 480. Returns null on anything we can't parse. */
 function timeToMinutes(time: string): number | null {
   const match = /^(\d{1,2}):(\d{2})$/.exec(time.trim());
   if (!match) return null;
   const hours = Number(match[1]);
-  const mins = Number(match[2]);
-  if (Number.isNaN(hours) || Number.isNaN(mins)) return null;
-  return hours * 60 + mins;
+  const minutes = Number(match[2]);
+  if (Number.isNaN(hours) || Number.isNaN(minutes)) return null;
+  return hours * 60 + minutes;
 }
 
 /**
- * Parse a row like "08:00 – 15:00" into an OpenWindow.
- * Returns null for "Closed" or anything we can't read (treated as closed).
- * Handles both en-dash and hyphen separators defensively.
+ * Parse a row like "08:00 – 15:00" into a window. Returns null for "Closed" or
+ * any unreadable value — callers treat null as "closed that day". Accepts both
+ * en-dash and hyphen separators defensively (the data uses "–").
  */
 export function parseHours(raw: string): OpenWindow | null {
   if (!raw || raw.toLowerCase() === "closed") return null;
-  const parts = raw.split(/[–-]/).map((p) => p.trim());
+  const parts = raw.split(/[–-]/).map((part) => part.trim());
   if (parts.length !== 2) return null;
   const open = timeToMinutes(parts[0] ?? "");
   const close = timeToMinutes(parts[1] ?? "");
@@ -57,36 +57,36 @@ export function parseHours(raw: string): OpenWindow | null {
   return { open, close };
 }
 
-export interface OpenStatus {
-  isOpen: boolean;
-  /** Set when closed: a friendly description of the next opening. */
-  nextOpening: string | null;
-}
-
-/** Format a window's open time for display, e.g. "08:00". */
+/** Render minutes-since-midnight back to a label, e.g. 480 → "08:00". */
 function minutesToLabel(minutes: number): string {
   const h = Math.floor(minutes / 60);
   const m = minutes % 60;
   return `${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}`;
 }
 
+export interface RestaurantStatus {
+  isOpen: boolean;
+  /** Set only when closed: a friendly next-opening label, or null if never. */
+  nextOpening: string | null;
+}
+
 /**
- * Find the next day (including today, later) that the café opens, relative to
- * the simulated now, and describe it — e.g. "Tomorrow at 08:00" or
- * "Tuesday at 08:00".
+ * Find the next moment the café opens, relative to `now`, and describe it —
+ * "Today at 08:00" / "Tomorrow at 08:00" / "Tuesday at 08:00". Walks the week
+ * with modulo so it wraps Sunday → Monday correctly.
  */
 function findNextOpening(hours: Hours, now: SimulatedNow): string | null {
   const todayIndex = DAY_ORDER.indexOf(now.day);
   if (todayIndex === -1) return null;
 
   for (let offset = 0; offset < DAY_ORDER.length; offset += 1) {
-    const index = (todayIndex + offset) % DAY_ORDER.length;
-    const day = DAY_ORDER[index];
+    const day = DAY_ORDER[(todayIndex + offset) % DAY_ORDER.length];
     if (!day) continue;
+
     const window = parseHours(hours[day]);
     if (!window) continue;
 
-    // Today only counts if we haven't yet passed opening time.
+    // Today only counts if we haven't yet reached opening time.
     if (offset === 0 && now.minutes >= window.open) continue;
 
     const time = minutesToLabel(window.open);
@@ -97,8 +97,15 @@ function findNextOpening(hours: Hours, now: SimulatedNow): string | null {
   return null;
 }
 
-/** Compute whether the café is currently open given a simulated moment. */
-export function getOpenStatus(hours: Hours, now: SimulatedNow): OpenStatus {
+/**
+ * Decide whether the café is open at the given moment. `now` is an *argument*,
+ * not `new Date()` — so the simulated demo clock and a real Europe/Lisbon clock
+ * are interchangeable without touching this logic.
+ */
+export function getRestaurantStatus(
+  hours: Hours,
+  now: SimulatedNow,
+): RestaurantStatus {
   const todayWindow = parseHours(hours[now.day]);
   const isOpen =
     todayWindow !== null &&

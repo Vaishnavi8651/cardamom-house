@@ -28,9 +28,10 @@ Requires Node 18.18+ (developed on Node 20).
 - **TypeScript** in `strict` mode (plus `noUncheckedIndexedAccess`) — no `any`
 - **Tailwind CSS v4** (CSS-first config via `@theme` in `globals.css`)
 - **next/font** — Fraunces (display serif) + Inter (body)
+- **next/image** — optimized, lazy-loaded photography (Unsplash sources)
 
-No backend, no CMS. The menu is hard-coded in `src/data/menu.json` and read
-through a single typed accessor.
+No backend, no CMS. The menu is hard-coded in `src/data/menu.ts` (typed with
+`satisfies`) and read through a single typed accessor.
 
 ## The three states
 
@@ -59,16 +60,19 @@ src/
   components/          # presentational, mostly server components
     Hero, OpenStatusBadge, CategoryNav (client), ClosedBanner,
     TodaysSpecial, MenuSection, MenuItemRow, Tag, HoursBlock, Footer
+    ui/               # reusable primitives: Container, SectionHeading, Badge
   hooks/
     useActiveSection.ts   # IntersectionObserver scroll-spy
   lib/
-    types.ts          # domain types mirroring the JSON
-    hours.ts          # open/closed + next-opening logic
-    state.ts          # ?state= parsing + simulated clock
-    format.ts         # € price formatting
+    formatPrice.ts        # € price formatting (Intl, en-IE)
+    getRestaurantStatus.ts # open/closed + next-opening logic
+    getTodaySpecial.ts    # resolves the special item + sold-out state
+    state.ts              # ?state= parsing + simulated clock
+  types/
+    menu.ts           # domain types (data is typed against these)
   data/
-    menu.json         # source data
-    menu.ts           # typed accessor + by-id lookup
+    menu.ts           # the menu, `satisfies MenuData`, + by-id lookup
+    images.ts         # curated photography (swap point)
 ```
 
 Only `CategoryNav` and the scroll-spy hook are client components; everything else
@@ -76,9 +80,14 @@ renders on the server.
 
 ## Decisions & trade-offs
 
-- **Typography over photography.** The brief calls food imagery a defensible
-  opt-out. A type-led layout reads faster on a phone outside the café and keeps
-  the page light, so I leaned on Fraunces + the amber instead of stock photos.
+- **Photography, engineered.** Real food/interior photos via `next/image`
+  (resize, lazy-load, `priority` + blur-up on the hero), sources whitelisted in
+  `next.config` and verified to load, with a brand-tint layer behind each image
+  so a failed load degrades to colour rather than a broken void. URLs live in one
+  typed `data/images.ts` so the café can swap in their own shots.
+- **Editorial hero, not a dark-overlay banner.** A full-bleed dark hero reads as
+  a generic startup landing page (which the brief warns against); a type-left,
+  photo-right layout with a softly layered frame keeps the warm café feel.
 - **Brand amber used structurally, not decoratively** — the active nav pill, the
   today's-special block, section underlines, the "today" hours row, hover states,
   and links all key off `--color-brand`.

@@ -1,10 +1,8 @@
-import { menu, getItemById } from "@/data/menu";
-import { getOpenStatus } from "@/lib/hours";
-import {
-  parseState,
-  simulatedNow,
-  isSpecialSoldOut,
-} from "@/lib/state";
+import { menu } from "@/data/menu";
+import { getRestaurantStatus } from "@/lib/getRestaurantStatus";
+import { parseState, simulatedNow } from "@/lib/state";
+import { getTodaySpecial } from "@/lib/getTodaySpecial";
+import { Container } from "@/components/ui/Container";
 import { Hero } from "@/components/Hero";
 import { CategoryNav } from "@/components/CategoryNav";
 import { ClosedBanner } from "@/components/ClosedBanner";
@@ -22,22 +20,21 @@ export default async function MenuPage({ searchParams }: PageProps) {
   const params = await searchParams;
   const state = parseState(params.state);
 
-  const { restaurant, today_special, categories } = menu;
+  // All decisions resolved up front by the lib layer; the JSX below just renders.
+  const { restaurant, categories } = menu;
   const now = simulatedNow(state);
-  const status = getOpenStatus(restaurant.hours, now);
-  const soldOut = isSpecialSoldOut(state);
-
-  const specialItem = getItemById(today_special.item_id);
-  const soldOutItemId = soldOut ? today_special.item_id : null;
+  const status = getRestaurantStatus(restaurant.hours, now);
+  const special = getTodaySpecial(state);
+  const soldOutItemId = special.isSoldOut ? special.itemId : null;
 
   const navLinks = [
-    ...categories.map((c) => ({ id: c.id, name: c.name })),
+    ...categories.map((category) => ({ id: category.id, name: category.name })),
     { id: "hours", name: "Hours" },
   ];
 
   return (
     <>
-      {/* Skip link for keyboard users. */}
+      {/* Skip link: the first focusable element, visible only on focus. */}
       <a
         href="#menu"
         className="print-hidden sr-only z-50 rounded-md bg-brand px-4 py-2 text-cream focus:not-sr-only focus:fixed focus:left-4 focus:top-4"
@@ -49,16 +46,18 @@ export default async function MenuPage({ searchParams }: PageProps) {
 
       <CategoryNav links={navLinks} />
 
-      {!status.isOpen && <ClosedBanner nextOpening={status.nextOpening} />}
+      {!status.isOpen ? (
+        <ClosedBanner nextOpening={status.nextOpening} />
+      ) : null}
 
       <TodaysSpecial
-        special={today_special}
-        item={specialItem}
-        soldOut={soldOut}
+        item={special.item}
+        blurb={special.blurb}
+        soldOut={special.isSoldOut}
       />
 
-      <main id="menu" className="mx-auto max-w-3xl px-5 pt-12">
-        <div className="space-y-14">
+      <main id="menu">
+        <Container className="space-y-14 pt-12">
           {categories.map((category) => (
             <MenuSection
               key={category.id}
@@ -68,7 +67,7 @@ export default async function MenuPage({ searchParams }: PageProps) {
           ))}
 
           <HoursBlock hours={restaurant.hours} today={now.day} />
-        </div>
+        </Container>
       </main>
 
       <Footer restaurant={restaurant} />

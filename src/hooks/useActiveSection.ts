@@ -3,10 +3,18 @@
 import { useEffect, useState } from "react";
 
 /**
- * Track which section is currently in view as the user scrolls, returning its id.
- * Uses IntersectionObserver with a top-biased rootMargin so a section becomes
- * "active" once its heading reaches the upper third of the viewport — which is
- * what reads as correct under a sticky top nav.
+ * Track which section is in view as the user scrolls, returning its id — the
+ * data the sticky nav needs to highlight the current category.
+ *
+ * Uses IntersectionObserver (the browser notifies us off the main thread) rather
+ * than a scroll listener (which fires constantly and forces layout). The
+ * rootMargin shrinks the observed area to a band ~20%–45% down the viewport, so a
+ * section becomes "active" once it reaches the upper-middle of the screen, which
+ * reads correctly beneath the sticky bar.
+ *
+ * Known limitation: a very short final section may never fill the band; a fully
+ * robust version would also treat "scrolled to page bottom" as activating the
+ * last id. Left out deliberately as scope.
  */
 export function useActiveSection(sectionIds: string[]): string | null {
   const [activeId, setActiveId] = useState<string | null>(
@@ -24,7 +32,7 @@ export function useActiveSection(sectionIds: string[]): string | null {
           visibility.set(entry.target.id, entry.intersectionRatio);
         }
 
-        // Pick the most-visible section; fall back to document order.
+        // Most-visible section wins; ties resolve to document order.
         let bestId: string | null = null;
         let bestRatio = 0;
         for (const id of sectionIds) {
@@ -37,7 +45,6 @@ export function useActiveSection(sectionIds: string[]): string | null {
         if (bestId) setActiveId(bestId);
       },
       {
-        // Bias the active zone toward the top under the sticky nav.
         rootMargin: "-20% 0px -55% 0px",
         threshold: [0, 0.25, 0.5, 0.75, 1],
       },

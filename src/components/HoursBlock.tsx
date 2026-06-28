@@ -1,5 +1,7 @@
-import type { DayKey, Hours } from "@/lib/types";
-import { DAY_ORDER, dayLabel, parseHours } from "@/lib/hours";
+import type { DayKey, Hours } from "@/types/menu";
+import { DAY_ORDER, dayLabel, parseHours } from "@/lib/getRestaurantStatus";
+import { SectionHeading } from "./ui/SectionHeading";
+import { Badge } from "./ui/Badge";
 
 interface HoursBlockProps {
   hours: Hours;
@@ -7,23 +9,18 @@ interface HoursBlockProps {
   today: DayKey;
 }
 
+/**
+ * Weekly opening hours as a description list (day = term, hours = definition).
+ * Today's row is emphasised with the brand tint and aria-current="date"; closed
+ * days are muted *and* labelled "Closed", so the distinction never relies on
+ * colour alone.
+ */
 export function HoursBlock({ hours, today }: HoursBlockProps) {
   return (
-    <section
-      aria-labelledby="hours-heading"
-      className="scroll-mt-24 print-break-avoid"
-      id="hours"
-    >
-      <header className="mb-2 border-b-2 border-brand/20 pb-3">
-        <h2
-          id="hours-heading"
-          className="font-display text-2xl font-semibold text-ink sm:text-3xl"
-        >
-          Opening Hours
-        </h2>
-      </header>
+    <section id="hours" aria-labelledby="hours-heading">
+      <SectionHeading id="hours-heading" title="Opening Hours" />
 
-      <dl className="mt-2">
+      <dl className="mt-1">
         {DAY_ORDER.map((day) => {
           const value = hours[day];
           const isClosed = parseHours(value) === null;
@@ -32,11 +29,11 @@ export function HoursBlock({ hours, today }: HoursBlockProps) {
           return (
             <div
               key={day}
+              aria-current={isToday ? "date" : undefined}
               className={[
                 "flex items-center justify-between rounded-lg px-3 py-2.5 text-sm",
                 isToday ? "bg-brand-tint" : "",
               ].join(" ")}
-              aria-current={isToday ? "date" : undefined}
             >
               <dt
                 className={[
@@ -45,11 +42,7 @@ export function HoursBlock({ hours, today }: HoursBlockProps) {
                 ].join(" ")}
               >
                 {dayLabel(day)}
-                {isToday && (
-                  <span className="rounded-full bg-brand px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-cream">
-                    Today
-                  </span>
-                )}
+                {isToday ? <Badge tone="amber">Today</Badge> : null}
               </dt>
               <dd
                 className={[

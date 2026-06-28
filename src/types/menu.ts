@@ -1,13 +1,15 @@
 /**
  * Domain types for the Cardamom House menu.
- * These mirror the shape of `src/data/menu.json` exactly so the data file
- * can be imported with full type-safety (no `any`, ever).
+ *
+ * These describe the *shape* of our hard-coded data. `data/menu.ts` then uses
+ * `satisfies MenuData` to prove the literal conforms — so a typo in the data is a
+ * compile error here, not a runtime surprise. No `any`, ever.
  */
 
-/** The three diet/heat tags that can appear on an item. */
+/** The three diet/heat tags an item can carry. A closed union, not `string`. */
 export type DietTag = "V" | "GF" | "spicy";
 
-/** Lowercase day keys, in the order the data file declares them. */
+/** Lowercase day keys, in the café's week order (starts Monday). */
 export type DayKey =
   | "monday"
   | "tuesday"
@@ -17,13 +19,13 @@ export type DayKey =
   | "saturday"
   | "sunday";
 
-/** A single orderable item on the menu. */
+/** A single orderable item. */
 export interface MenuItem {
   id: string;
   name: string;
-  /** May be an empty string for sides/extras. */
+  /** May be "" for sides/extras — kept required so every item is uniform. */
   description: string;
-  /** Price in EUR, e.g. 11.5 → €11.50. */
+  /** Price in EUR as a number, e.g. 11.5 → "€11.50". Never a pre-formatted string. */
   price: number;
   tags: DietTag[];
 }
@@ -32,12 +34,12 @@ export interface MenuItem {
 export interface Category {
   id: string;
   name: string;
-  /** Optional blurb under the section heading; may be empty. */
+  /** Optional blurb under the heading; may be empty. */
   description: string;
   items: MenuItem[];
 }
 
-/** Weekly opening hours. Closed days hold the literal string "Closed". */
+/** Weekly opening hours. A closed day holds the literal string "Closed". */
 export type Hours = Record<DayKey, string>;
 
 export interface Restaurant {
@@ -45,6 +47,7 @@ export interface Restaurant {
   tagline: string;
   address: string;
   hours: Hours;
+  /** Hex string; surfaced as a CSS token, not used inline. */
   brand_color: string;
   phone: string;
   instagram: string;
@@ -56,7 +59,7 @@ export interface TodaySpecial {
   blurb: string;
 }
 
-/** The full menu document. */
+/** The full menu document — the single source of truth for the page. */
 export interface MenuData {
   restaurant: Restaurant;
   today_special: TodaySpecial;
