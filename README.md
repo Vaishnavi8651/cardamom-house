@@ -4,7 +4,7 @@ A single, public-facing menu page for a fictional Lisbon brunch café. Built as 
 focused frontend trial task: typography-led, mobile-first, warm, and brand-true
 to the café's amber (`#B45309`).
 
-**Live demo:** _add your Vercel URL here_
+**Live demo:** https://cardamom-house.vercel.app
 
 ---
 
@@ -20,6 +20,19 @@ npm run build && npm start   # production build
 ```
 
 Requires Node 18.18+ (developed on Node 20).
+
+## Deployment
+
+Deployed on **Vercel** at **https://cardamom-house.vercel.app**.
+
+It's a zero-config Next.js deploy: Vercel auto-detects the framework, runs
+`next build`, and serves it. Every push to `main` triggers a new production
+deployment (and pull requests get preview URLs). No environment variables are
+needed — the only external dependency is the Unsplash image host, already
+allow-listed in [`next.config.ts`](next.config.ts) under `images.remotePatterns`.
+
+To deploy your own copy: import the repo at [vercel.com/new](https://vercel.com/new)
+and click **Deploy**, or run `npx vercel --prod` from the project root.
 
 ## Tech
 
