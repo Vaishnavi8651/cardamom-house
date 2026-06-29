@@ -2,10 +2,11 @@ import Image from "next/image";
 import type { Restaurant } from "@/types/menu";
 import type { RestaurantStatus } from "@/lib/getRestaurantStatus";
 import { heroImage, BLUR_DATA_URL } from "@/data/images";
-import { mapsHref, telHref } from "@/lib/contact";
+import { mapsHref } from "@/lib/contact";
 import { Container } from "./ui/Container";
 import { OpenStatusBadge } from "./OpenStatusBadge";
 import { ThemeToggle } from "./ThemeToggle";
+import { CallDialog } from "./CallDialog";
 
 interface HeroProps {
   restaurant: Restaurant;
@@ -84,12 +85,7 @@ export function Hero({ restaurant, status, nowLabel }: HeroProps) {
               Get directions
               <span aria-hidden="true">→</span>
             </a>
-            <a
-              href={telHref(restaurant.phone)}
-              className="inline-flex items-center gap-1.5 rounded-full border border-line bg-paper px-5 py-2.5 text-sm font-semibold text-ink transition-colors hover:text-brand"
-            >
-              Call
-            </a>
+            <CallDialog phone={restaurant.phone} />
           </div>
         </div>
 
