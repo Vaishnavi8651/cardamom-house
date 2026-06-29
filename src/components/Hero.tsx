@@ -85,7 +85,7 @@ export function Hero({ restaurant, status, nowLabel }: HeroProps) {
               Get directions
               <span aria-hidden="true">→</span>
             </a>
-            <CallDialog phone={restaurant.phone} />
+            <CallDialog phone={restaurant.phone} name={restaurant.name} />
           </div>
         </div>
 

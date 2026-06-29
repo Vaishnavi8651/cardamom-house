@@ -7,7 +7,7 @@ import { useEffect, useRef, useState } from "react";
  * instead of a raw tel: link — which on some machines is hijacked by apps like
  * Zoom. Built on native <dialog> for focus-trap/Esc/backdrop/aria-modal.
  */
-export function CallDialog({ phone }: { phone: string }) {
+export function CallDialog({ phone, name }: { phone: string; name: string }) {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDialogElement>(null);
 
@@ -50,7 +50,7 @@ export function CallDialog({ phone }: { phone: string }) {
         <div className="animate-pop p-6">
           <div className="flex items-start justify-between gap-3">
             <h2 id="call-title" className="font-display text-xl font-semibold text-ink">
-              Call Cardamom House
+              Call {name}
             </h2>
             <button
               type="button"

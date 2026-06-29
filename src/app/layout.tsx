@@ -4,6 +4,7 @@ import "./globals.css";
 import { OrderProvider } from "@/components/order/OrderProvider";
 import { ItemModal } from "@/components/order/ItemModal";
 import { OrderBar } from "@/components/order/OrderBar";
+import { menu } from "@/data/menu";
 
 /** Warm, slightly editorial serif for display type. */
 const fraunces = Fraunces({
@@ -20,19 +21,21 @@ const inter = Inter({
   display: "swap",
 });
 
+// Metadata is derived from the same JSON data source — no duplicated strings.
+const { name, tagline, brand_color } = menu.restaurant;
+
 export const metadata: Metadata = {
-  title: "Cardamom House — Slow brunch & strong coffee in Lisbon",
-  description:
-    "Cardamom House is a brunch café in Lisbon. Slow brunch, single-origin coffee, and a saffron French toast worth crossing town for. See the full menu and opening hours.",
+  title: `${name} — ${tagline}`,
+  description: `${name}. ${tagline} See the full menu, today's special and opening hours.`,
   openGraph: {
-    title: "Cardamom House",
-    description: "Slow brunch. Strong coffee. Lisbon, since 2021.",
+    title: name,
+    description: tagline,
     type: "website",
   },
 };
 
 export const viewport: Viewport = {
-  themeColor: "#b45309",
+  themeColor: brand_color,
 };
 
 export default function RootLayout({

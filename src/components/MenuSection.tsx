@@ -27,7 +27,7 @@ export function MenuSection({ category, soldOutItemId }: MenuSectionProps) {
         <div className="group relative mb-5 aspect-[16/7] overflow-hidden rounded-2xl bg-brand-tint shadow-card sm:aspect-[16/5]">
           <Image
             src={category.image}
-            alt={`${category.name} at Cardamom House`}
+            alt={`${category.name} dishes`}
             fill
             sizes="(min-width: 768px) 48rem, 100vw"
             placeholder="blur"
