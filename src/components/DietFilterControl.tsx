@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback } from "react";
+import { useCallback, useOptimistic, useTransition } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import type { DietFilter } from "@/lib/diet";
 
@@ -20,6 +20,9 @@ export function DietFilterControl({ value }: { value: DietFilter }) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  const [, startTransition] = useTransition();
+  // Reflect the choice instantly while the server re-renders in the background.
+  const [optimisticValue, setOptimisticValue] = useOptimistic(value);
 
   const select = useCallback(
     (next: DietFilter) => {
@@ -27,9 +30,12 @@ export function DietFilterControl({ value }: { value: DietFilter }) {
       if (next === "all") params.delete("diet");
       else params.set("diet", next);
       const qs = params.toString();
-      router.replace(qs ? `${pathname}?${qs}` : pathname, { scroll: false });
+      startTransition(() => {
+        setOptimisticValue(next);
+        router.replace(qs ? `${pathname}?${qs}` : pathname, { scroll: false });
+      });
     },
-    [router, pathname, searchParams],
+    [router, pathname, searchParams, setOptimisticValue],
   );
 
   return (
@@ -43,7 +49,7 @@ export function DietFilterControl({ value }: { value: DietFilter }) {
       </span>
       <div className="inline-flex rounded-full border border-line bg-paper p-0.5">
         {OPTIONS.map((option) => {
-          const checked = option.value === value;
+          const checked = option.value === optimisticValue;
           return (
             <label
               key={option.value}

@@ -93,11 +93,28 @@ body {
   }
 }
 
-/* A consistent, visible focus ring across interactive elements. */
-:focus-visible {
+/* Remove the coloured tap-flash on touch devices. */
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Visible focus ring for keyboard users — scoped to real interactive controls,
+   so neither a touch tap nor a programmatically-focused container (e.g. the
+   section we focus on nav click) draws an amber outline. */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+summary:focus-visible {
   outline: 2px solid var(--color-brand);
   outline-offset: 2px;
   border-radius: 4px;
+}
+
+/* Scroll-target sections receive programmatic focus but must not show a ring. */
+[tabindex="-1"]:focus {
+  outline: none;
 }
 
 /* Tasteful one-time entrance for above-the-fold content (pure CSS). */
